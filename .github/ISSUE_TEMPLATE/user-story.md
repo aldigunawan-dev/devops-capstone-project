@@ -1,6 +1,6 @@
 ---
-name: New Issue Template
-about: New Issue Template or DevOps Capstone Project
+name: User Story
+about: User Story Template or DevOps Capstone Project
 title: ''
 labels: ''
 assignees: ''
