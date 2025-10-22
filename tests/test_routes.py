@@ -14,8 +14,7 @@ from service.models import db, Account, init_db
 from service.routes import app
 
 DATABASE_URI = os.getenv(
-    "DATABASE_URI", "postgresql://postgres:postgres@localhost:5432/postgres"
-)
+    "DATABASE_URI", "postgresql://postgres:postgres@localhost:5432/postgres")
 
 BASE_URL = "/accounts"
 
@@ -89,11 +88,9 @@ class TestAccountService(TestCase):
     def test_create_account(self):
         """It should Create a new Account"""
         account = AccountFactory()
-        response = self.client.post(
-            BASE_URL,
-            json=account.serialize(),
-            content_type="application/json"
-        )
+        response = self.client.post(BASE_URL,
+                                    json=account.serialize(),
+                                    content_type="application/json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         # Make sure location header is set
@@ -116,20 +113,18 @@ class TestAccountService(TestCase):
     def test_unsupported_media_type(self):
         """It should not Create an Account when sending the wrong media type"""
         account = AccountFactory()
-        response = self.client.post(
-            BASE_URL,
-            json=account.serialize(),
-            content_type="test/html"
-        )
-        self.assertEqual(response.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
+        response = self.client.post(BASE_URL,
+                                    json=account.serialize(),
+                                    content_type="test/html")
+        self.assertEqual(response.status_code,
+                         status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
 
     # ADD YOUR TEST CASES HERE ...
     def test_get_account(self):
         """It should Read a single Account"""
         account = self._create_accounts(1)[0]
-        response = self.client.get(
-            f"{BASE_URL}/{account.id}", content_type="application/json"
-        )
+        response = self.client.get(f"{BASE_URL}/{account.id}",
+                                   content_type="application/json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.get_json()
         self.assertEqual(data["name"], account.name)
@@ -141,7 +136,7 @@ class TestAccountService(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.get_json()
         self.assertEqual(len(data), 5)
-    
+
     def test_update_account(self):
         """It should Update an existing Account"""
         # create an Account to update
@@ -152,7 +147,8 @@ class TestAccountService(TestCase):
         # update the account
         new_account = resp.get_json()
         new_account["name"] = "Alex Melex"
-        resp = self.client.put(f"{BASE_URL}/{new_account['id']}", json=new_account)
+        resp = self.client.put(f"{BASE_URL}/{new_account['id']}",
+                               json=new_account)
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         updated_account = resp.get_json()
         self.assertEqual(updated_account["name"], "Alex Melex")
@@ -167,4 +163,3 @@ class TestAccountService(TestCase):
         """It should not allow an illegal method call"""
         resp = self.client.delete(BASE_URL)
         self.assertEqual(resp.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
-        
