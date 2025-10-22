@@ -81,6 +81,14 @@ def read_account(account_id):
     app.logger.info("Returning account: %s", account.name)
     return account.serialize(), status.HTTP_200_OK
 
+@app.route("/accounts", methods=["GET"])
+def list_accounts():
+    """Returns a list of accounts"""
+    app.logger.info("Request to list accounts...")
+    accounts = Account.all()
+    results = [account.serialize() for account in accounts]
+    app.logger.info("[%s] Products returned", len(results))
+    return jsonify(results), status.HTTP_200_OK
 
 ######################################################################
 # UPDATE AN EXISTING ACCOUNT
