@@ -48,8 +48,7 @@ def create_accounts():
     account.create()
     message = account.serialize()
     # Uncomment once get_accounts has been implemented
-    # location_url = url_for("get_accounts", account_id=account.id, _external=True)
-    location_url = "/"  # Remove once get_accounts has been implemented
+    location_url = url_for("get_accounts", account_id=account.id, _external=True)
     return make_response(
         jsonify(message), status.HTTP_201_CREATED, {"Location": location_url}
     )
@@ -72,7 +71,7 @@ def list_accounts():
 ######################################################################
 
 @app.route("/accounts/<int:account_id>", methods=["GET"])
-def read_account(account_id):
+def get_accounts(account_id):
     """
     Read an Account
     This endpoint will return a Account based on it's id
@@ -107,7 +106,7 @@ def update_accounts(account_id):
 ######################################################################
 
 @app.route("/accounts/<int:account_id>", methods=["DELETE"])
-  def delete_accounts(account_id):
+def delete_accounts(account_id):
     """
     Delete an Account
     This endpoint will delete an Account based on the account_id that is requested
@@ -117,7 +116,6 @@ def update_accounts(account_id):
     if account:
         account.delete()
     return "", status.HTTP_204_NO_CONTENT
-
 
 ######################################################################
 #  U T I L I T Y   F U N C T I O N S
